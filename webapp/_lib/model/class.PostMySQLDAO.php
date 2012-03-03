@@ -150,7 +150,7 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
         $q .= ' ORDER BY ' . $ordering;
 
         if ($count > 0) {
-            $q .= " LIMIT :start_on_record, :limit;";
+            $q .= "LIMIT :start_on_record, :limit;";
         } else {
             $q .= ';';
         }
@@ -248,12 +248,12 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
             $q .= "AND p.is_protected = 0 ";
         }
         if ($order_by == 'location') {
-            $q .= " ORDER BY geo_status, reply_retweet_distance, is_reply_by_friend DESC, follower_count desc ";
+            $q .= "ORDER BY geo_status, reply_retweet_distance, is_reply_by_friend DESC, follower_count desc ";
         } else if ($order_by != 'default') {
             $order_by = $this->sanitizeOrderBy($order_by);
-            $q .= " ORDER BY $order_by DESC ";
+            $q .= "ORDER BY $order_by DESC ";
         } else {
-            $q .= " ORDER BY is_reply_by_friend DESC, follower_count DESC, p.id DESC ";
+            $q .= "ORDER BY is_reply_by_friend DESC, follower_count DESC, p.id DESC ";
         }
 
         $vars = array(
@@ -376,18 +376,18 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
 
     public function getExchangesBetweenUsers($author_id, $other_user_id, $network='twitter') {
         $q = "SELECT   p1.author_username as questioner_username, p1.author_avatar as questioner_avatar, ";
-        $q .= " p2.follower_count as questioner_follower_count, p1.post_id as question_post_id, ";
-        $q .= " p1.post_text as question, p1.pub_date + interval #gmt_offset# hour as question_adj_pub_date, ";
-        $q .= " p.post_id as answer_post_id,  p.author_username as answerer_username, ";
-        $q .= " p.author_avatar as answerer_avatar, p3.follower_count as answerer_follower_count, ";
-        $q .= " p.post_text as answer, p.network, p.pub_date + interval #gmt_offset# hour as answer_adj_pub_date ";
-        $q .= " FROM  #prefix#posts p INNER JOIN #prefix#posts p1 on p1.post_id = p.in_reply_to_post_id ";
-        $q .= " JOIN #prefix#users p2 on p2.user_id = :author_id ";
-        $q .= " JOIN #prefix#users p3 on p3.user_id = :other_user_id ";
-        $q .= " WHERE p.in_reply_to_post_id is not null AND p.network=:network AND ";
-        $q .= " (p.author_user_id = :author_id AND p1.author_user_id = :other_user_id) ";
-        $q .= " OR (p1.author_user_id = :author_id AND p.author_user_id = :other_user_id) ";
-        $q .= " ORDER BY answer_adj_pub_date DESC, question_adj_pub_date ASC ";
+        $q .= "p2.follower_count as questioner_follower_count, p1.post_id as question_post_id, ";
+        $q .= "p1.post_text as question, p1.pub_date + interval #gmt_offset# hour as question_adj_pub_date, ";
+        $q .= "p.post_id as answer_post_id,  p.author_username as answerer_username, ";
+        $q .= "p.author_avatar as answerer_avatar, p3.follower_count as answerer_follower_count, ";
+        $q .= "p.post_text as answer, p.network, p.pub_date + interval #gmt_offset# hour as answer_adj_pub_date ";
+        $q .= "FROM  #prefix#posts p INNER JOIN #prefix#posts p1 on p1.post_id = p.in_reply_to_post_id ";
+        $q .= "JOIN #prefix#users p2 on p2.user_id = :author_id ";
+        $q .= "JOIN #prefix#users p3 on p3.user_id = :other_user_id ";
+        $q .= "WHERE p.in_reply_to_post_id is not null AND p.network=:network AND ";
+        $q .= "(p.author_user_id = :author_id AND p1.author_user_id = :other_user_id) ";
+        $q .= "OR (p1.author_user_id = :author_id AND p.author_user_id = :other_user_id) ";
+        $q .= "ORDER BY answer_adj_pub_date DESC, question_adj_pub_date ASC ";
         $vars = array(
             ':author_id'=>(string)$author_id,
             ':other_user_id'=>(string)$other_user_id,
@@ -407,7 +407,7 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
 
     public function isPostInDB($post_id, $network) {
         $q = "SELECT post_id FROM  #prefix#posts ";
-        $q .= " WHERE post_id = :post_id AND network=:network;";
+        $q .= "WHERE post_id = :post_id AND network=:network;";
         $vars = array(
             ':post_id'=>(string)$post_id,
             ':network'=>$network
@@ -439,8 +439,8 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
      * @return int Number of affected rows
      */
     private function updateAPIRetweetCount($post_id, $retweet_count_api, $network) {
-        $q = " UPDATE  #prefix#posts SET retweet_count_api = :count ";
-        $q .= " WHERE post_id = :post_id AND network=:network";
+        $q = "UPDATE  #prefix#posts SET retweet_count_api = :count ";
+        $q .= "WHERE post_id = :post_id AND network=:network";
         $vars = array(
             ':post_id'=>(string)$post_id,
             ':network'=>$network,
@@ -462,8 +462,8 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
      * @return int Number of affected rows
      */
     private function updateInRetweetOfPostID($post_id, $in_retweet_of_post_id, $network) {
-        $q = " UPDATE  #prefix#posts SET in_retweet_of_post_id = :rpid ";
-        $q .= " WHERE post_id = :post_id AND network=:network";
+        $q = "UPDATE  #prefix#posts SET in_retweet_of_post_id = :rpid ";
+        $q .= "WHERE post_id = :post_id AND network=:network";
         $q .= ' AND in_retweet_of_post_id IS NULL ';
         $vars = array(
             ':post_id'=>(string)$post_id,
@@ -515,7 +515,7 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
             $fieldname ="favlike";
         }
         if ($fieldname) {
-            $q = " UPDATE  #prefix#posts SET ".$fieldname."_count_cache = ".$fieldname."_count_cache + 1 ";
+            $q = "UPDATE  #prefix#posts SET ".$fieldname."_count_cache = ".$fieldname."_count_cache + 1 ";
             $q .= "WHERE post_id = :post_id AND network=:network";
             $vars = array(
                 ':post_id'=>(string)$post_id,
@@ -677,7 +677,7 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
             //Set up any optional fields
             foreach ($this->OPTIONAL_FIELDS as $field) {
                 if (isset($vals[$field]) && $vals[$field] != '') {
-                    $q .= " ".$field."=:".$field.", ";
+                    $q .= "".$field."=:".$field.", ";
                     $vars[':'.$field] = $vals[$field];
                 }
             }
@@ -768,9 +768,9 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
         $q .= "FROM #prefix#posts AS p ";
         $q .= "WHERE p.network = :network ";
         $q .= $protected;
-        $q .= " AND p.author_user_id IN ( ";
-        $q .= "   SELECT user_id FROM #prefix#follows AS f ";
-        $q .= "   WHERE f.follower_id=:user_id AND f.active=1 AND f.network=:network ";
+        $q .= "AND p.author_user_id IN ( ";
+        $q .= "  SELECT user_id FROM #prefix#follows AS f ";
+        $q .= "  WHERE f.follower_id=:user_id AND f.active=1 AND f.network=:network ";
         $q .= ")";
         $q .= "ORDER BY p.id DESC ";
         $q .= "LIMIT :start_on_record, :limit";
@@ -809,8 +809,8 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
         $q .= "FROM #prefix#posts AS p ";
         $q .= "WHERE p.network = :network ";
         $q .= $protected;
-        $q .= " AND in_reply_to_post_id IS NULL ";
-        $q .= " AND p.in_reply_to_user_id = :user_id ";
+        $q .= "AND in_reply_to_post_id IS NULL ";
+        $q .= "AND p.in_reply_to_user_id = :user_id ";
         $q .= "ORDER BY p.id DESC ";
         $q .= "LIMIT :start_on_record, :limit";
         $vars = array(
@@ -1144,9 +1144,9 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
         if ($is_public) {
             $q .= 'AND p.is_protected = 0 ';
         }
-        $q .= " ORDER BY ".$order_by." DESC ";
+        $q .= "ORDER BY ".$order_by." DESC ";
         if ($count) {
-            $q .= " LIMIT :limit";
+            $q .= "LIMIT :limit";
             $vars[':limit'] = (int)$count;
         }
         if ($this->profiler_enabled) Profiler::setDAOMethod(__METHOD__);
@@ -1256,7 +1256,7 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
         $direction = ($direction == 'DESC') ? 'DESC' : 'ASC';
 
         $author_username = '@'.$author_username;
-        $q = " SELECT p.*, u.*, pub_date + interval #gmt_offset# hour as adj_pub_date ";
+        $q = "SELECT p.*, u.*, pub_date + interval #gmt_offset# hour as adj_pub_date ";
         $q .= "FROM #prefix#posts AS p ";
         $q .= "INNER JOIN #prefix#users AS u ON p.author_user_id = u.user_id ";
         $q .= "WHERE p.network = :network AND ";
@@ -1389,20 +1389,20 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
         $start_on_record = ($page - 1) * $count;
 
         $username = "@".$username;
-        $q = " SELECT p.* , u.*, pub_date + interval #gmt_offset# hour as adj_pub_date ";
-        $q .= " FROM #prefix#posts p ";
-        $q .= " INNER JOIN #prefix#users u ON u.user_id = p.author_user_id WHERE ";
+        $q = "SELECT p.* , u.*, pub_date + interval #gmt_offset# hour as adj_pub_date ";
+        $q .= "FROM #prefix#posts p ";
+        $q .= "INNER JOIN #prefix#users u ON u.user_id = p.author_user_id WHERE ";
         //fulltext search only works for words longer than 4 chars
         if ( strlen($username) > PostMySQLDAO::FULLTEXT_CHAR_MINIMUM ) {
-            $q .= " MATCH (`post_text`) AGAINST(:username IN BOOLEAN MODE) ";
+            $q .= "MATCH (`post_text`) AGAINST(:username IN BOOLEAN MODE) ";
         } else {
             $username = '%'.$username .'%';
-            $q .= " post_text LIKE :username ";
+            $q .= "post_text LIKE :username ";
         }
-        $q .= " AND in_reply_to_post_id is null ";
-        $q .= " AND in_retweet_of_post_id is null ";
-        $q .= " AND p.network = :network ";
-        $q .= " ORDER BY pub_date DESC LIMIT :start_on_record, :limit;";
+        $q .= "AND in_reply_to_post_id is null ";
+        $q .= "AND in_retweet_of_post_id is null ";
+        $q .= "AND p.network = :network ";
+        $q .= "ORDER BY pub_date DESC LIMIT :start_on_record, :limit;";
         $vars = array(
             ':username'=>$username,
             ':network'=>$network,
@@ -1455,9 +1455,9 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
         $q = "SELECT q.post_id, q.location, q.geo, q.place, q.in_reply_to_post_id, q.in_retweet_of_post_id, ";
         $q.= "q.is_reply_by_friend, q.is_retweet_by_friend, q.network FROM ";
         $q .= "(SELECT * FROM #prefix#posts AS p WHERE ";
-        $q .= " (p.geo IS NOT null OR p.place IS NOT null OR p.location IS NOT null)";
-        $q .= " AND (p.is_geo_encoded='0' OR p.is_geo_encoded='3') ";
-        $q .= " ORDER BY id DESC LIMIT :limit) AS q ORDER BY q.id";
+        $q .= "(p.geo IS NOT null OR p.place IS NOT null OR p.location IS NOT null)";
+        $q .= "AND (p.is_geo_encoded='0' OR p.is_geo_encoded='3') ";
+        $q .= "ORDER BY id DESC LIMIT :limit) AS q ORDER BY q.id";
         $vars = array(
             ':limit'=>(int)$limit
         );
@@ -1504,7 +1504,7 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
     }
 
     public function updateAuthorUsername($author_user_id, $network, $author_username) {
-        $q = " UPDATE  #prefix#posts SET author_username = :author_username ";
+        $q = "UPDATE  #prefix#posts SET author_username = :author_username ";
         $q .= "WHERE author_user_id = :author_user_id AND network=:network";
         $vars = array(
             ':author_user_id'=>(string)$author_user_id,
@@ -1562,9 +1562,9 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
      */
     public function getClientsUsedByUserOnNetwork($author_id, $network) {
         $q  = "SELECT COUNT(*) AS num_posts, source";
-        $q .= "  FROM #prefix#posts ";
-        $q .= " WHERE author_user_id = :author_id AND network = :network";
-        $q .= " GROUP BY source";
+        $q .= " FROM #prefix#posts ";
+        $q .= "WHERE author_user_id = :author_id AND network = :network";
+        $q .= "GROUP BY source";
         $vars = array(
             ':author_id'=>(string)$author_id,
             ':network'=>$network
@@ -1574,13 +1574,13 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
         $all_time_clients_usage = self::cleanClientsNames($rows);
 
         $q  = "SELECT COUNT(*) AS num_posts, source";
-        $q .= "  FROM (";
-        $q .= "       SELECT *";
-        $q .= "         FROM #prefix#posts ";
-        $q .= "        WHERE author_user_id = :author_id AND network = :network";
-        $q .= "        ORDER BY pub_date DESC";
-        $q .= "        LIMIT 25) p";
-        $q .= " GROUP BY source";
+        $q .= " FROM (";
+        $q .= "      SELECT *";
+        $q .= "        FROM #prefix#posts ";
+        $q .= "       WHERE author_user_id = :author_id AND network = :network";
+        $q .= "       ORDER BY pub_date DESC";
+        $q .= "       LIMIT 25) p";
+        $q .= "GROUP BY source";
         $vars = array(
             ':author_id'=>(string)$author_id,
             ':network'=>$network
@@ -1622,7 +1622,7 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
     }
 
     public function updateFavLikeCount($post_id, $network, $fav_like_count) {
-        $q = " UPDATE #prefix#posts SET favlike_count_cache=:favlike_count_cache WHERE post_id=:post_id ";
+        $q = "UPDATE #prefix#posts SET favlike_count_cache=:favlike_count_cache WHERE post_id=:post_id ";
         $q .= "AND network=:network;";
         $vars = array(
             ':favlike_count_cache'=>$fav_like_count,
@@ -1635,7 +1635,7 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
     }
 
     public function updateReplyCount($post_id, $network, $reply_count) {
-        $q = " UPDATE #prefix#posts SET reply_count_cache=:reply_count_cache WHERE post_id=:post_id ";
+        $q = "UPDATE #prefix#posts SET reply_count_cache=:reply_count_cache WHERE post_id=:post_id ";
         $q .= "AND network=:network;";
         $vars = array(
             ':reply_count_cache'=>$reply_count,
@@ -1648,7 +1648,7 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
     }
 
     public function updateRetweetCount($post_id, $network, $retweet_count) {
-        $q = " UPDATE #prefix#posts SET retweet_count_cache=:retweet_count_cache WHERE post_id=:post_id ";
+        $q = "UPDATE #prefix#posts SET retweet_count_cache=:retweet_count_cache WHERE post_id=:post_id ";
         $q .= "AND network=:network;";
         $vars = array(
             ':retweet_count_cache'=>$retweet_count,
@@ -1661,7 +1661,7 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
     }
 
     public function updatePostText($post_id, $network, $post_text) {
-        $q = " UPDATE #prefix#posts SET post_text=:post_text WHERE post_id=:post_id ";
+        $q = "UPDATE #prefix#posts SET post_text=:post_text WHERE post_id=:post_id ";
         $q .= "AND network=:network;";
         $vars = array(
             ':post_text'=>$post_text,
@@ -1671,5 +1671,155 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
         if ($this->profiler_enabled) Profiler::setDAOMethod(__METHOD__);
         $ps = $this->execute($q, $vars);
         return $this->getUpdateCount($ps);
+    }
+
+    public function getAllCheckins($author_id, $network) {
+        // Get the checkins from the database for this user
+        $q = "SELECT po.id AS post_key, po.post_id, po.author_user_id, po.author_username, po.author_fullname, ";
+        $q .= "po.author_avatar, po.author_follower_count, po.post_text, po.is_protected, po.source, po.location, ";
+        $q .= "po.place, po.place_id, po.geo, po.pub_date, po.in_reply_to_user_id, po.in_reply_to_post_id, ";
+        $q .= "po.reply_count_cache, po.is_reply_by_friend, po.in_retweet_of_post_id, po.old_retweet_count_cache, ";
+        $q .= "po.is_retweet_by_friend, po.reply_retweet_distance, po.network, po.is_geo_encoded, ";
+        $q .= "po.in_rt_of_user_id, po.retweet_count_cache, po.retweet_count_api, po.favlike_count_cache, ";
+        $q .= "po.pub_date + interval #gmt_offset# hour as adj_pub_date, pl.place_id, pl.place_type, pl.name, ";
+        $q .= "pl.full_name, pl.country_code, pl.country, pl.network, pl.longlat, pl.bounding_box, pl.icon, ";
+        $q .= "pl.map_image, pl.id  ";
+        $q .= "FROM #prefix#posts po ";
+        $q .= "JOIN #prefix#places pl ON po.place_id = pl.place_id ";
+        $q .= "WHERE author_user_id=:author AND po.network=:network AND po.in_reply_to_post_id IS null ";
+        $q .= "ORDER BY pub_date DESC";
+        $vars = array(
+             ':author'=>$author_id,
+             ':network'=>$network
+        );
+        if ($this->profiler_enabled) Profiler::setDAOMethod(__METHOD__);
+
+        $ps = $this->execute($q, $vars);
+        $all_rows = $this->getDataRowsAsArrays($ps);
+
+        // Get all the post ids of the checkins (we use this later for our link query)
+        $post_keys_array = array();
+        foreach ($all_rows as $row) {
+            $post_keys_array[] = $row['post_key'];
+        }
+
+        // An array to store each post object in for the checkins
+        $all_posts = array();
+        foreach ($all_rows as $row) {
+            $data = new Post($row);
+            $data->place_obj = new Place($row);
+            // Query for all the links related to these posts / checkins
+            $q2 = "SELECT * FROM #prefix#links WHERE post_key in (".implode(",", $post_keys_array).")";
+            $ps2 = $this->execute($q2);
+            $all_link_rows = $this->getDataRowsAsArrays($ps2);
+
+            // For each link returned if it equals the post id of this post add the link to this post
+            foreach ($all_link_rows as $link_row) {
+                if ($link_row['post_key'] == $data->id) {
+                    $data->addLink(new Link($link_row));
+                }
+            }
+            if ($this->profiler_enabled) Profiler::setDAOMethod(__METHOD__);
+            // Now we have all the information for this post store it in our array of all posts
+            $all_posts[] = $data;
+        }
+        return $all_posts;
+    }
+
+    public function getAllCheckinsFromThisDayInYearX($author_id, $network, $year) {
+        $q = "SELECT po.id AS post_key, po.post_id, po.author_user_id, po.author_username, po.author_fullname, ";
+        $q .= "po.author_avatar, po.author_follower_count, po.post_text, po.is_protected, po.source, po.location, ";
+        $q .= "po.place, po.place_id, po.geo, po.pub_date, po.in_reply_to_user_id, po.in_reply_to_post_id, ";
+        $q .= "po.reply_count_cache, po.is_reply_by_friend, po.in_retweet_of_post_id, po.old_retweet_count_cache, ";
+        $q .= "po.is_retweet_by_friend, po.reply_retweet_distance, po.network, po.is_geo_encoded, ";
+        $q .= "po.in_rt_of_user_id, po.retweet_count_cache, po.retweet_count_api, po.favlike_count_cache, ";
+        $q .= "po.pub_date + interval #gmt_offset# hour as adj_pub_date, pl.place_id, pl.place_type, pl.name, ";
+        $q .= "pl.full_name, pl.country_code, pl.country, pl.network, pl.longlat, pl.bounding_box, pl.icon, ";
+        $q .= "pl.map_image, pl.id  ";
+        $q .= "FROM #prefix#posts po ";
+        $q .= "JOIN #prefix#places pl ON po.place_id = pl.place_id ";
+        $q .= "WHERE (YEAR(pub_date)=:year) AND ";
+        $q .= "(DAYOFMONTH(pub_date)=DAYOFMONTH(CURRENT_DATE())) AND (MONTH(pub_date)=MONTH(CURRENT_DATE())) AND ";
+        $q .= "author_user_id=:author AND po.network=:network AND in_reply_to_post_id IS null ORDER BY pub_date DESC ";
+        $vars = array(
+            ':year'=> $year,
+            ':author'=> $author_id,
+            ':network'=>$network);
+        if ($this->profiler_enabled) Profiler::setDAOMethod(__METHOD__);
+
+        $ps = $this->execute($q, $vars);
+        $all_rows = $this->getDataRowsAsArrays($ps);
+
+        // Get all the post ids of the checkins (we use this later for our link query)
+        $post_keys_array = array();
+        foreach ($all_rows as $row) {
+            $post_keys_array[] = $row['post_key'];
+        }
+
+        // An array to store each post object in for the checkins
+        $all_posts = array();
+        foreach ($all_rows as $row) {
+            $data = new Post($row);
+            $data->place_obj = new Place($row);
+
+            // Query for all the links related to these posts / checkins
+            $q2 = "SELECT * FROM #prefix#links WHERE post_key in (".implode(",", $post_keys_array).")";
+            if ($this->profiler_enabled) Profiler::setDAOMethod(__METHOD__);
+            $ps2 = $this->execute($q2);
+            $all_link_rows = $this->getDataRowsAsArrays($ps2);
+
+            // For each link returned if it equals the post id of this post add the link to this post
+            foreach ($all_link_rows as $link_row) {
+                if ($link_row['post_key'] == $data->id) {
+                    $data->addLink(new Link($link_row));
+                }
+            }
+
+            // Now we have all the information for this post store it in our array of all posts
+            $all_posts[] = $data;
+        }
+        return $all_posts;
+    }
+
+    public function countCheckinsToPlaceTypes($author_id, $network) {
+        $q = "SELECT place_type, COUNT(place_type) AS place_count FROM #prefix#places WHERE place_id IN ";
+        $q .= "(SELECT place_id FROM #prefix#posts WHERE author_user_id=:author AND network=:network) ";
+        $q .= "GROUP BY place_type";
+        $vars = array(
+            'author'=>$author_id,
+            'network'=>$network);
+        if ($this->profiler_enabled) Profiler::setDAOMethod(__METHOD__);
+
+        $ps = $this->execute($q, $vars);
+        $all_rows = $this->getDataRowsAsArrays($ps);
+        if ($this->profiler_enabled) Profiler::setDAOMethod(__METHOD__);
+        return $all_rows;
+    }
+
+    public function countCheckinsPerHourAllTime($author_id, $network) {
+        $q = "SELECT HOUR(pub_date) AS hour, COUNT(HOUR(pub_date)) AS counter FROM #prefix#posts ";
+        $q .= "WHERE author_user_id=:author ";
+        $q .= "AND network=:network AND in_reply_to_post_id IS null GROUP BY HOUR(pub_date)";
+        $vars = array(
+            'author'=>$author_id,
+            'network'=>$network);
+        if ($this->profiler_enabled) Profiler::setDAOMethod(__METHOD__);
+        $ps = $this->execute($q, $vars);
+        $all_rows = $this->getDataRowsAsArrays($ps);
+        return $all_rows;
+    }
+
+    public function countCheckinsPerHourLastWeek($author_id, $network) {
+        $q = "SELECT HOUR(pub_date) AS hour, COUNT(HOUR(pub_date)) AS counter FROM #prefix#posts ";
+        $q .= "WHERE author_user_id=:author ";
+        $q .= "AND network=:network AND YEARWEEK(pub_date) = YEARWEEK(CURRENT_DATE) AND in_reply_to_post_id IS null ";
+        $q .= "GROUP BY HOUR(pub_date)";
+        $vars = array(
+            'author'=>$author_id,
+            'network'=>$network);
+        if ($this->profiler_enabled) Profiler::setDAOMethod(__METHOD__);
+        $ps = $this->execute($q, $vars);
+        $all_rows = $this->getDataRowsAsArrays($ps);
+        return $all_rows;
     }
 }

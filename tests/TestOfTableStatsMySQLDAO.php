@@ -53,7 +53,7 @@ class TestOfTableStatsMySQLDAO extends ThinkUpUnitTestCase {
         // no counts...
         $counts = $table_stats_daa->getTableRowCounts();
         foreach($counts as $table) {
-            if($table['table'] == $this->table_prefix . 'options') {
+            if ($table['table'] == $this->table_prefix . 'options') {
                 $this->assertEqual($table['count'], 1);
             } else if($table['table'] == $this->table_prefix . 'plugins') {
                 $this->assertEqual($table['count'], 4);

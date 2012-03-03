@@ -170,7 +170,7 @@ class InstallerMySQLDAO extends PDODAO implements InstallerDAO  {
                 } else {
                     $stmt = $this->execute("SHOW COLUMNS FROM #prefix#completed_migrations");
                     $column_data = $this->getDataRowsAsArrays($stmt);
-                    if(! isset($column_data[2])) { // no sql_ran colum, so add
+                    if (! isset($column_data[2])) { // no sql_ran colum, so add
                         $stmt = $this->execute("ALTER TABLE #prefix#completed_migrations ADD COLUMN " .
                         "sql_ran text COMMENT 'The migration sql that was executed'");
                     }

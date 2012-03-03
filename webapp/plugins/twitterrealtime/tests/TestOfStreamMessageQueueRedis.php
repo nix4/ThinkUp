@@ -105,8 +105,8 @@ class TestOfStreamMessageQueueRedis extends ThinkUpUnitTestCase {
      *     WITH_REDIS=1 php tests/this_test.php
      */
     public function testWithRedis() {
-        if((getenv('WITH_REDIS')!==false)) {
-            if($this->DEBUG) { print "NOTE: Running redis test againt a local redis server\n"; }
+        if ((getenv('WITH_REDIS')!==false)) {
+            if ($this->DEBUG) { print "NOTE: Running redis test againt a local redis server\n"; }
             $queue = new StreamMessageQueueRedis();
             $queue->enqueueStatus("this is a mock status 1");
             $queue->enqueueStatus("this is a mock status 2");
@@ -116,7 +116,7 @@ class TestOfStreamMessageQueueRedis extends ThinkUpUnitTestCase {
             $this->assertEqual($data2, "this is a mock status 2");
             $this->assertNull($queue->processStreamData());
         } else {
-            if($this->DEBUG) { print "NOTE: Skipping local redis server tests...\n"; }
+            if ($this->DEBUG) { print "NOTE: Skipping local redis server tests...\n"; }
         }
     }
 }

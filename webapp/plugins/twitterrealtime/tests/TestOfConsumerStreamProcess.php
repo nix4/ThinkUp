@@ -118,8 +118,8 @@ class TestOfConsumerStreamProcess extends ThinkUpUnitTestCase {
             //error_log("PHP version less than 5.3, Skipping Redis Tests...");
             return;
         }
-        if((getenv('WITH_REDIS')!==false)) {
-            if($this->DEBUG) { print "NOTE: Running redis test againt a local redis server\n"; }
+        if ((getenv('WITH_REDIS')!==false)) {
+            if ($this->DEBUG) { print "NOTE: Running redis test againt a local redis server\n"; }
             $this->setUpTwitterData();
             $this->setUpData('true');
 

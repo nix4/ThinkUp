@@ -355,7 +355,7 @@ class Utils {
             error_reporting( E_ERROR | E_USER_ERROR ); // turn off warning messages
             $tz = date_default_timezone_get(); // get tz if we can
             error_reporting( $error_reporting ); // reset error reporting
-            if(! $tz) { // if no $tz defined, use UTC
+            if (!$tz) { // if no $tz defined, use UTC
                 $tz = 'UTC';
             }
             ini_set('date.timezone',$tz);

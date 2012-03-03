@@ -1,9 +1,16 @@
 <?php
+/*
+ Plugin Name: foursquare
+ Plugin URI: http://github.com/ginatrapani/thinkup/tree/master/webapp/plugins/foursquare/
+ Description: Capture and display foursquare checkins.
+ Class: FoursquarePlugin
+ Icon: assets/img/foursquare_icon.png
+ Version: 1
+ Author: Aaron Kalair
+ */
 /**
  *
- * ThinkUp/tests/classes/class.TestPreAuthController.php
- *
- * Copyright (c) 2011-2012 Mark Wilkie
+ * webapp/plugins/foursquare/controller/foursquare.php
  *
  * LICENSE:
  *
@@ -21,25 +28,20 @@
  * <http://www.gnu.org/licenses/>.
  *
  *
- * Test PreAuthController
+ * Foursquare
  *
- * Test auth controller to try the ThinkUpAuthController abstract class and Controller interface
+ * Description of what this class does
+ *
+ * Copyright (c) 2012 Aaron Kaliar
+ *
+ * @author Aaron Kalair <aaronkalair[at]gmail[dot][com]>
  * @license http://www.gnu.org/licenses/gpl.html
- * @copyright 2011-2012 Mark Wilkie
- * @author Mark Wilkie <mwilkie[at]gmail[dot]com>
+ * @copyright 2012 Aaron Kalair
  */
-class TestPreAuthController extends ThinkUpAuthController {
-    public function authControl() {
-        $this->setViewTemplate('testme.tpl');
-        $this->addToView('test', 'We are not preauthed!');
-        return $this->generateView();
-    }
+// Get the instance and register the foursquare plugin
+$webapp = Webapp::getInstance();
+$webapp->registerPlugin('foursquare', 'FoursquarePlugin');
 
-    protected function preAuthControl() {
-        if (isset($_GET['preauth'])) {
-            $this->addToView('test', 'We are preauthed!');
-        } else {
-            return false;
-        }
-    }
-}
+$crawler = Crawler::getInstance();
+$crawler->registerCrawlerPlugin('FoursquarePlugin');
+
