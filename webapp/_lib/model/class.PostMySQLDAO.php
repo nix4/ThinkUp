@@ -143,11 +143,11 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
         $class_name = ucfirst($network) . 'Plugin';
         $ordering = @call_user_func($class_name.'::repliesOrdering', $order_by);
         if (empty($ordering)) {
-            $ordering = 'pub_date ASC';
+            $ordering = "pub_date ASC ";
         } else {
-            $ordering .= ', pub_date ASC';
+            $ordering .= ", pub_date ASC ";
         }
-        $q .= ' ORDER BY ' . $ordering;
+        $q .= "ORDER BY " . $ordering. " ";
 
         if ($count > 0) {
             $q .= "LIMIT :start_on_record, :limit;";
@@ -1561,9 +1561,9 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
      *               Both arrays are sorted by number of use, descending.
      */
     public function getClientsUsedByUserOnNetwork($author_id, $network) {
-        $q  = "SELECT COUNT(*) AS num_posts, source";
-        $q .= " FROM #prefix#posts ";
-        $q .= "WHERE author_user_id = :author_id AND network = :network";
+        $q  = "SELECT COUNT(*) AS num_posts, source ";
+        $q .= "FROM #prefix#posts ";
+        $q .= "WHERE author_user_id = :author_id AND network = :network ";
         $q .= "GROUP BY source";
         $vars = array(
             ':author_id'=>(string)$author_id,
@@ -1579,7 +1579,7 @@ class PostMySQLDAO extends PDODAO implements PostDAO  {
         $q .= "        FROM #prefix#posts ";
         $q .= "       WHERE author_user_id = :author_id AND network = :network";
         $q .= "       ORDER BY pub_date DESC";
-        $q .= "       LIMIT 25) p";
+        $q .= "       LIMIT 25) p ";
         $q .= "GROUP BY source";
         $vars = array(
             ':author_id'=>(string)$author_id,
